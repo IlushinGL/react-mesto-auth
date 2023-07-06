@@ -1,0 +1,20 @@
+.footer {
+  flex-shrink: 0;
+  margin: 67px auto 60px;
+
+  padding: 0;
+  min-width: 880px;
+}
+
+@media (max-width: 917px) {
+  .footer {
+    min-width: 581px;
+  }
+}
+
+@media (max-width: 618px) {
+  .footer {
+    min-width: 282px;
+    margin: 48px auto 36px;
+  }
+}

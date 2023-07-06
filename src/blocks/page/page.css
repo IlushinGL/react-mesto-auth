@@ -1,0 +1,15 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0 auto;
+  min-height: 100vh;
+  /* ограничения по ширине */
+  min-width: 320px;
+  /* предпочтения по шрифтам */
+  font-family: Inter, Arial, sans-serif;
+
+  background-color: var(--color-ground);
+  color: var(--color-fill);
+  cursor: default;
+}

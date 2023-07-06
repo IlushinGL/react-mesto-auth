@@ -1,0 +1,8 @@
+.popup__conteiner_img {
+  padding: 0;
+  width: auto;
+  max-height: calc(75vh + 25px);
+  border-radius: 0;
+  background-color: transparent;
+  color: var(--color-fill);
+}

@@ -1,0 +1,38 @@
+.profile {
+  display: grid;
+  max-width: 880px;
+  margin: 40px auto 51px;
+  padding: 0;
+
+  grid-template-columns: 120px repeat(2, auto);
+  grid-template-areas:
+    'avatar info addbtm';
+  column-gap: 30px;
+  row-gap: 0;
+}
+
+@media (max-width: 917px) {
+  .profile {
+    max-width: 581px;
+    margin: 18px auto 51px;
+    grid-template-columns: 120px auto;
+    grid-template-rows: repeat(2, auto);
+    grid-template-areas:
+      'avatar info'
+      'avatar addbtm';
+  }
+}
+
+@media (max-width: 618px) {
+  .profile {
+    max-width: 282px;
+    margin: 42px 19px 36px;
+
+    grid-template-columns: auto;
+    grid-template-rows: repeat(3, auto);
+    grid-template-areas:
+      'avatar'
+      'info'
+      'addbtm';
+  }
+}

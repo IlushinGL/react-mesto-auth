@@ -1,0 +1,17 @@
+.elements__element {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: var(--r-element);
+  background-color: var(--color-fill);
+
+  display: grid;
+  grid-template-columns: 282px;
+  grid-template-rows: repeat(2, auto);
+  grid-template-areas:
+    'img'
+    'cap';
+  gap: 0;
+
+}

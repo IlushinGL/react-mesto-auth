@@ -1,0 +1,14 @@
+.elements__element-text {
+  grid-area: txt;
+  padding: 0;
+  margin: auto auto 0 0;
+  width: 100%;
+  color: var(--color-ground);
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

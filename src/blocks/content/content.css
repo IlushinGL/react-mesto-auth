@@ -1,0 +1,18 @@
+.content {
+  padding: 0;
+  flex: 1;
+  margin: 0 auto;
+  min-width: 880px;
+}
+
+@media (max-width: 917px) {
+  .content {
+    min-width: 581px;
+  }
+}
+
+@media (max-width: 618px) {
+  .content {
+    min-width: 320px;
+  }
+}

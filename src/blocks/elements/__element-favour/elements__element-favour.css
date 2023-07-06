@@ -1,0 +1,25 @@
+.elements__element-favour {
+  grid-area: icofvr;
+  display: flex;
+  flex-direction: column;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 26px;
+  border: none;
+  margin: 0 auto auto 0;
+  padding: 0;
+  width: 22px;
+  height: 35px;
+  align-items: center;
+  background-color: transparent;
+  background-size: cover;
+  /* border: 1px solid #ed6742; */
+
+  opacity: 1;
+  cursor: pointer;
+  transition: opacity .5s linear;
+}
+
+.elements__element-favour:hover {
+  opacity: .5;
+}

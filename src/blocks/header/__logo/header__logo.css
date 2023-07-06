@@ -1,0 +1,14 @@
+.header__logo {
+  display: block;
+  max-width: 142px;
+  margin: 0 auto 41px 0;
+  object-fit: cover;
+  content: url(../../../images/Logo.svg);
+}
+
+@media (max-width: 618px) {
+  .header__logo {
+    max-width: 104px;
+    margin: 0 auto 32px 27px;
+  }
+}

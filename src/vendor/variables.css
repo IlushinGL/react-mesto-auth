@@ -1,0 +1,12 @@
+:root {
+  /* цвета */
+  --color-ground: #000;
+  --color-fill: #FFF;
+  --color-line: rgb(84 84 84 / 70%);
+  --color-footer: #545454;
+  --color-hold: rgb(0 0 0 / 20%);
+  --color-shadow: rgb(0 0 0 / 15%);
+  --color-err: #F00;
+  /* углы */
+  --r-element: 10px;
+}

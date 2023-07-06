@@ -1,0 +1,13 @@
+.elements__element-caption {
+  grid-area: cap;
+  width: auto;
+  padding: 0;
+  margin: 25px 21px;
+
+  display: grid;
+  grid-template-columns: 219px 22px;
+  grid-template-rows: auto;
+  grid-template-areas:
+    'txt icofvr';
+  gap: 0;
+}

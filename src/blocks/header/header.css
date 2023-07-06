@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  border-bottom: 1px solid var(--color-line);
+  flex-direction: column;
+  margin: 45px auto 0;
+  padding: 0;
+  min-width: 880px;
+  justify-content: space-between;
+}
+
+@media (max-width: 917px) {
+  .header {
+    min-width: 581px;
+  }
+}
+
+@media (max-width: 618px) {
+  .header {
+    min-width: 320px;
+    margin-top: 28px;
+  }
+}

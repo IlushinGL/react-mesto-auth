@@ -1,0 +1,13 @@
+.elements__element-img {
+  grid-area: img;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  aspect-ratio: 1/1;
+  box-sizing: border-box;
+  background-color: var(--color-ground);
+  object-position: center;
+  object-fit: cover;
+  border-radius: var(--r-element) var(--r-element) 0 0;
+  cursor: pointer;
+}
