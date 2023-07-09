@@ -5,11 +5,8 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
   const [link, setLink] = React.useState('');
   const [name, setName] = React.useState('');
 
-  const [linkDirty, setLinkDirty] = React.useState(false);
-  const [nameDirty, setNameDirty] = React.useState(false);
-
-  const [linkError, setLinkError] = React.useState('Ссылка не может быть пустой');
-  const [nameError, setNameError] = React.useState('Название не может быть пустым');
+  const [linkError, setLinkError] = React.useState(' ');
+  const [nameError, setNameError] = React.useState(' ');
 
   const [formValid, setFormValid] = React.useState(false);
 
@@ -20,10 +17,8 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
       setLink('');
       setName('');
 
-      setLinkDirty(false);
-      setNameDirty(false);
-      setLinkError('Ссылка не может быть пустой');
-      setNameError('Название не может быть пустым');
+      setLinkError(' ');
+      setNameError(' ');
 
       setCaption('Создать');
       setFormValid(false);
@@ -37,19 +32,6 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
       setFormValid(true);
     }
   }, [linkError, nameError]);
-
-  function blurHandler(e) {
-    switch (e.target.name) {
-      case 'name':
-        setNameDirty(true);
-        break;
-      case 'link':
-        setLinkDirty(true);
-        break;
-      default:
-        break;
-    }
-  }
 
   function handleChangeLink(e) {
     setLink(e.target.value);
@@ -84,7 +66,6 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
         name="name"
         type="text"
         value={name}
-        onBlur={blurHandler}
         onChange={handleChangeName}
         placeholder="Название"
         minLength="3"
@@ -93,20 +74,19 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
         className="popup__input-text"
         required />
       <span className="popup__input-error">
-        {nameDirty && nameError}
+        {nameError}
       </span>
       <input
         name="link"
         type="url"
         value={link}
-        onBlur={blurHandler}
         onChange={handleChangeLink}
         placeholder="Ссылка на картинку"
         autoComplete="off"
         className="popup__input-text"
         required />
       <span className="popup__input-error">
-        {linkDirty && linkError}
+        {linkError}
       </span>
     </PopupWithForm>
   );

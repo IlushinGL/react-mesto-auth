@@ -1,0 +1,13 @@
+.data {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  visibility: hidden;
+  position: relative;
+  flex-direction: column;
+  /* align-items: center; */
+  /* justify-content: center; */
+  opacity: 1;
+  height: 100%;
+  width: 100vw;
+}

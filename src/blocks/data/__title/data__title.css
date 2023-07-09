@@ -1,0 +1,20 @@
+.data__title {
+  display: block;
+  padding: 0;
+  margin: 0;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 121%;
+  margin-top: 60px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: var(--color-fill);
+}
+
+@media (max-width: 618px) {
+  .data__title {
+    font-size: 20px;
+    margin-top: 40px;
+    margin-bottom: 10px;
+  }
+}

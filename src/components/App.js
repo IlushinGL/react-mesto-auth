@@ -1,8 +1,10 @@
 import React from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { apInterface } from '../utils/Api';
 import Header from './Header';
 import Main from './Main';
+import Login from './Login';
 import Footer from './Footer';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
@@ -25,6 +27,7 @@ function App() {
   const [isEditAvatarPopupOpen, setAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setCard] = React.useState(null);
   const [deletedCard, setDeletedCard] = React.useState(null);
+  const [isloggedIn, setloggedIn] = React.useState(false);
 
   React.useEffect(() => {
     // Помещаем МЕНЯ в КОНТЕКСТ.
@@ -130,14 +133,22 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Main cards={cards}
+        <Routes>
+          <Route path="/" element={isloggedIn ? <Navigate to="/main" replace /> : <Navigate to="/login" replace />} />
+          <Route path="/login" element={<Login isOpen={true} onLogIn={undefined} />} />
+          <Route path="/main" element={
+            <Main cards={cards}
               onEditProfile={handleEditProfileClick}
               onAddPlace={handleAddPlaceClick}
               onEditAvatar={handleEditAvatarClick}
               onCardClick={handleCardClick}
               onCardLike={handleCardLike}
               onCardDelete={handleCardDelete}
-        />
+            />}
+          />
+        </Routes>
+
+
         <Footer />
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />

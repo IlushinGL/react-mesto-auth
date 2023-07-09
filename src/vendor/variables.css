@@ -2,6 +2,7 @@
   /* цвета */
   --color-ground: #000;
   --color-fill: #FFF;
+  --color-data-hold: #CCC;
   --color-line: rgb(84 84 84 / 70%);
   --color-footer: #545454;
   --color-hold: rgb(0 0 0 / 20%);
@@ -9,4 +10,7 @@
   --color-err: #F00;
   /* углы */
   --r-element: 10px;
+}
+.redborder {
+  border: 1px solid red;
 }

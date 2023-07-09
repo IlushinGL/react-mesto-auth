@@ -1,4 +1,4 @@
-.popup__submit-btm_inactive {
+.popup__submit-btn_inactive {
   background-color: transparent;
   color: var(--color-hold);
   border: 1px solid var(--color-hold);

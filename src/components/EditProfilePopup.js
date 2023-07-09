@@ -7,8 +7,8 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
 
-  const [descriptionError, setDescriptionError] = React.useState('');
-  const [nameError, setNameError] = React.useState('');
+  const [descriptionError, setDescriptionError] = React.useState(' ');
+  const [nameError, setNameError] = React.useState(' ');
 
   const [formValid, setFormValid] = React.useState(false);
 
@@ -19,8 +19,8 @@ function EditProfilePopup({isOpen, onClose, onUpdateUser}) {
       setName(currentUser.name);
       setDescription(currentUser.about);
 
-      setDescriptionError('');
-      setNameError('');
+      setDescriptionError(' ');
+      setNameError(' ');
 
       setCaption('Сохранить');
       setFormValid(true);

@@ -1,0 +1,17 @@
+.data__conteiner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  margin: auto;
+  padding: 0;
+  width: 358px;
+  background-color: var(--color-ground);
+}
+
+@media (max-width: 618px) {
+  .data__conteiner {
+    width: 260px;
+  }
+}

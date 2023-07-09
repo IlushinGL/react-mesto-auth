@@ -1,0 +1,6 @@
+.data__submit-btn_inactive {
+  background-color: transparent;
+  color: var(--color-data-hold);
+  border: 1px solid var(--color-data-hold);
+  cursor: auto;
+}
