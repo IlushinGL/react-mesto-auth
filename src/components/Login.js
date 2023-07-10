@@ -10,7 +10,7 @@ function Login({onLogIn}) {
 
   const [formValid, setFormValid] = React.useState(false);
 
-  const [caption, setCaption] = React.useState('Войти');
+  // const [caption, setCaption] = React.useState('Войти');
 
   React.useEffect(() => {
     if (emailError || passwordError) {
@@ -32,7 +32,7 @@ function Login({onLogIn}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setCaption('Вход...');
+    // setCaption('Вход...');
     // Передать значения управляемых компонентов во внешний обработчик
     onLogIn({
       email: email,
@@ -44,7 +44,7 @@ function Login({onLogIn}) {
     <DataCollectionForm
       title="Вход"
       name="login"
-      btnCaption={caption}
+      btnCaption={'Войти'}
       btnEnabled={formValid}
       onSubmit={handleSubmit}>
       <input

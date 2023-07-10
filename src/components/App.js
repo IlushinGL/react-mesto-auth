@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { apInterface } from '../utils/Api';
 import { apiUserAuth } from '../utils/Auth';
@@ -30,9 +30,10 @@ function App() {
   const [isEditAvatarPopupOpen, setAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setCard] = React.useState(null);
   const [deletedCard, setDeletedCard] = React.useState(null);
-  const [islogedIn, setlogedIn] = React.useState(false);
+  const [isUserKnown, setUserKnown] = React.useState(false);
   const [userEmail, setUserEmail] = React.useState('');
   const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     checkToken();
@@ -51,16 +52,31 @@ function App() {
   function handleRegister({email, password}) {
     apiUserAuth.register({email, password})
     .then((res) => {
-      setlogedIn(true);
-      setUserEmail(res.email);
-      console.log(res.email);
+      setUserKnown(true);
+      navigate('/sign-in', {replace: true});
     })
     .catch((err) => {
-      setlogedIn(false);
-      setUserEmail('');
-      console.log(`${err} <Не получилось произвести регистрацию с указанными данными.>`);
+      setUserKnown(false);
+      console.log(`${err} <Неудачная попытка регистрации.>`);
     })
     .finally(() => {
+      setUserEmail('');
+      setInfoTooltipOpen(true);
+    });
+  }
+
+  function handleLogin({email, password}) {
+    apiUserAuth.login({email, password})
+    .then((res) => {
+      setUserKnown(true);
+      setUserEmail(email);
+      localStorage.setItem('jwt', res.token);
+      navigate('/main', {replace: true});
+    })
+    .catch((err) => {
+      setUserKnown(false);
+      setUserEmail('');
+      console.log(`${err} <Неудачная попытка авторизации.>`);
       setInfoTooltipOpen(true);
     });
   }
@@ -70,11 +86,11 @@ function App() {
     if (jwt) {
       apiUserAuth.checkToken(jwt)
       .then((res) => {
-        setlogedIn(true);
-        setUserEmail(res.email);
+        setUserKnown(true);
+        setUserEmail(res.data.email);
       })
       .catch((err) => {
-        setlogedIn(false);
+        setUserKnown(false);
         setUserEmail('');
         console.log(`${err} <Тухлый токен.>`);
       });
@@ -176,8 +192,8 @@ function App() {
       <div className="page">
         <Header email={userEmail} />
         <Routes>
-          <Route path="/" element={islogedIn ? <Navigate to="/main" replace /> : <Navigate to="/sign-in" replace />} />
-          <Route path="/sign-in" element={<Login onLogIn={undefined} />} />
+          <Route path="/" element={isUserKnown ? <Navigate to="/main" replace /> : <Navigate to="/sign-in" replace />} />
+          <Route path="/sign-in" element={<Login onLogIn={handleLogin} />} />
           <Route path="/sign-up" element={<Register onRegister={handleRegister} />} />
           <Route path="/main" element={
             <Main cards={cards}
@@ -217,7 +233,7 @@ function App() {
         onConfirm={handleCardDeleteConfirm} />
 
         <InfoTooltip
-        isOK={islogedIn}
+        isOK={isUserKnown}
         isOpen={isInfoTooltipOpen}
         onClose={closeAllPopups} />
 
