@@ -7,3 +7,6 @@
   line-height: 121%;
   text-align: left;
 }
+.popup__title_center {
+  text-align: center;
+}

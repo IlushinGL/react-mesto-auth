@@ -2,15 +2,18 @@ import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { apInterface } from '../utils/Api';
+import { apiUserAuth } from '../utils/Auth';
 import Header from './Header';
 import Main from './Main';
 import Login from './Login';
+import Register from './Register';
 import Footer from './Footer';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import ConfirmationPopup from './ConfirmationPopup';
+import InfoTooltip from './InfoTooltip';
 import avatarNulllPath from '../images/template.png';
 
 
@@ -27,18 +30,56 @@ function App() {
   const [isEditAvatarPopupOpen, setAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setCard] = React.useState(null);
   const [deletedCard, setDeletedCard] = React.useState(null);
-  const [isloggedIn, setloggedIn] = React.useState(false);
+  const [islogedIn, setlogedIn] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState('');
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = React.useState(false);
 
   React.useEffect(() => {
+    checkToken();
     // Помещаем МЕНЯ в КОНТЕКСТ.
     apInterface.getUserInfo()
     .then((info) => {setCurrentUser(info)})
-    .catch((err)=>{console.log(err)});
+    .catch((err) => {
+      console.log(`${err} <Не удалось получить информацию о пользователе.>`);});
     // Задаём начальный массив карточек.
     apInterface.getInitialCards()
     .then((initialCards) => {setCards(Array.from(initialCards))})
-    .catch((err)=>{console.log(err)});
+    .catch((err) => {
+      console.log(`${err} <Не удалось получить начальный массив карточек.>`);});
   }, []);
+
+  function handleRegister({email, password}) {
+    apiUserAuth.register({email, password})
+    .then((res) => {
+      setlogedIn(true);
+      setUserEmail(res.email);
+      console.log(res.email);
+    })
+    .catch((err) => {
+      setlogedIn(false);
+      setUserEmail('');
+      console.log(`${err} <Не получилось произвести регистрацию с указанными данными.>`);
+    })
+    .finally(() => {
+      setInfoTooltipOpen(true);
+    });
+  }
+
+  function checkToken() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      apiUserAuth.checkToken(jwt)
+      .then((res) => {
+        setlogedIn(true);
+        setUserEmail(res.email);
+      })
+      .catch((err) => {
+        setlogedIn(false);
+        setUserEmail('');
+        console.log(`${err} <Тухлый токен.>`);
+      });
+    }
+  }
 
   function handleCardLike(card) {
     // Есть ли МОЙ лайк на карточке?
@@ -48,9 +89,8 @@ function App() {
     .then((newCard) => {
       setCards((state) => state.map((item) => item._id === card._id ? newCard : item));
     })
-    .catch((err)=>{
-      console.log(err);
-    });
+    .catch((err) => {
+      console.log(`${err} <Не удалось поставить лайк на карточке id:${card._id}>`);});
   }
 
   function handleCardDelete(card) {
@@ -63,10 +103,11 @@ function App() {
     apInterface.deleteCard(deletedCard._id)
     .then(() => {
       setCards((state) => state.filter((item) => item._id !== deletedCard._id));
-      closeAllPopups();
     })
-    .catch((err)=>{
-      console.log(err);
+    .catch((err) => {
+      console.log(`${err} <Не удалось удалить карточку id:${deletedCard._id}>`);})
+    .finally(() => {
+      closeAllPopups();
     });
   }
 
@@ -77,7 +118,7 @@ function App() {
       setCurrentUser(saved_info);
     })
     .catch((err) => {
-      console.log(`${err} <Не удалось изменить профиль name:${new_info.name} about:${new_info.about}>`)})
+      console.log(`${err} <Не удалось изменить профиль name:${new_info.name} about:${new_info.about}>`);})
     .finally(() => {
       closeAllPopups();
     });
@@ -90,7 +131,7 @@ function App() {
       setCurrentUser(saved_link);
     })
     .catch((err) => {
-      console.log(`${err} <Не удалось обновить аватар link:${new_link}>`)})
+      console.log(`${err} <Не удалось обновить аватар link:${new_link}>`);})
     .finally(() => {
       closeAllPopups();
     });
@@ -103,7 +144,7 @@ function App() {
       setCards([saved_card, ...cards]);
     })
     .catch((err) => {
-      console.log(`${err} <Не удалось добавить карточку name:${new_card.name} link:${new_card.link}>`)})
+      console.log(`${err} <Не удалось добавить карточку name:${new_card.name} link:${new_card.link}>`);})
     .finally(() => {
       closeAllPopups();
     });
@@ -127,15 +168,17 @@ function App() {
     setAvatarPopupOpen(false);
     setCard(null);
     setDeletedCard(null);
+    setInfoTooltipOpen(false);
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header />
+        <Header email={userEmail} />
         <Routes>
-          <Route path="/" element={isloggedIn ? <Navigate to="/main" replace /> : <Navigate to="/login" replace />} />
-          <Route path="/login" element={<Login isOpen={true} onLogIn={undefined} />} />
+          <Route path="/" element={islogedIn ? <Navigate to="/main" replace /> : <Navigate to="/sign-in" replace />} />
+          <Route path="/sign-in" element={<Login onLogIn={undefined} />} />
+          <Route path="/sign-up" element={<Register onRegister={handleRegister} />} />
           <Route path="/main" element={
             <Main cards={cards}
               onEditProfile={handleEditProfileClick}
@@ -172,6 +215,11 @@ function App() {
         isOpen={deletedCard}
         onClose={closeAllPopups}
         onConfirm={handleCardDeleteConfirm} />
+
+        <InfoTooltip
+        isOK={islogedIn}
+        isOpen={isInfoTooltipOpen}
+        onClose={closeAllPopups} />
 
       </div>
     </CurrentUserContext.Provider>

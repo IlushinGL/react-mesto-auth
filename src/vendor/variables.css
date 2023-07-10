@@ -2,6 +2,7 @@
   /* цвета */
   --color-ground: #000;
   --color-fill: #FFF;
+  --color-data-link: rgb(255 255 255 / 60%);
   --color-data-hold: #CCC;
   --color-line: rgb(84 84 84 / 70%);
   --color-footer: #545454;

@@ -1,7 +1,7 @@
 import React from 'react';
 import DataCollectionForm from './DataCollectionForm';
 
-function Login({onLogIn}) {
+function Register({onRegister}) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -10,7 +10,7 @@ function Login({onLogIn}) {
 
   const [formValid, setFormValid] = React.useState(false);
 
-  const [caption, setCaption] = React.useState('Войти');
+  // const [caption, setCaption] = React.useState('Зарегистрироваться');
 
   React.useEffect(() => {
     if (emailError || passwordError) {
@@ -32,9 +32,9 @@ function Login({onLogIn}) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setCaption('Вход...');
+    // setCaption('Регистрация...');
     // Передать значения управляемых компонентов во внешний обработчик
-    onLogIn({
+    onRegister({
       email: email,
       password: password,
     });
@@ -42,9 +42,9 @@ function Login({onLogIn}) {
 
   return (
     <DataCollectionForm
-      title="Вход"
-      name="login"
-      btnCaption={caption}
+      title="Регистрация"
+      name="register"
+      btnCaption={'Зарегистрироваться'}
       btnEnabled={formValid}
       onSubmit={handleSubmit}>
       <input
@@ -78,4 +78,4 @@ function Login({onLogIn}) {
     </DataCollectionForm>
   );
 }
-export default Login;
+export default Register;

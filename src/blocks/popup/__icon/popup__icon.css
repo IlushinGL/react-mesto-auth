@@ -1,0 +1,15 @@
+.popup__icon {
+  /* display: block; */
+  margin: 26px auto 32px;
+  padding: 0;
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 618px) {
+  .popup__icon {
+    margin: 16px auto 40px;
+  }
+}

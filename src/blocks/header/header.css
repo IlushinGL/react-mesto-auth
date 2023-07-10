@@ -6,6 +6,7 @@
   padding: 0;
   min-width: 880px;
   justify-content: space-between;
+  align-items: baseline;
 }
 
 @media (max-width: 917px) {
