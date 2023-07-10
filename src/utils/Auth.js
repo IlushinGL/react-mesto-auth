@@ -9,6 +9,7 @@ class Auth {
     this._signIn = signIn;
     this._user = user;
     this._headers = {
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
     };
   }

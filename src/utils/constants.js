@@ -8,7 +8,7 @@ export const API_DATA = {
   like: '/likes',
 };
 export const AUTH_DATA = {
-  server: 'https://mesto.nomoreparties.co',
+  server: 'https://auth.nomoreparties.co',
   signUp: '/signup',
   signIn: '/signin',
   user: '/users/me',
