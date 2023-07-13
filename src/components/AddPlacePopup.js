@@ -1,55 +1,28 @@
 import React from 'react';
 import PopupWithForm from "./PopupWithForm";
+import { useFormAndValidation } from '../utils/customHooks';
 
 function AddPlacePopup({isOpen, onClose, onAddPlace}) {
-  const [link, setLink] = React.useState('');
-  const [name, setName] = React.useState('');
-
-  const [linkError, setLinkError] = React.useState(' ');
-  const [nameError, setNameError] = React.useState(' ');
-
-  const [formValid, setFormValid] = React.useState(false);
+  const {values, handleChange, errors, isValid, setValues, setIsValid} = useFormAndValidation()
 
   const [caption, setCaption] = React.useState('Создать');
 
   React.useEffect(() => {
     if (!isOpen) {
-      setLink('');
-      setName('');
-
-      setLinkError(' ');
-      setNameError(' ');
+      setValues({link: '', name: ''});
+      setIsValid(false);
 
       setCaption('Создать');
-      setFormValid(false);
     }
-  }, [isOpen]);
-
-  React.useEffect(() => {
-    if (linkError || nameError) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [linkError, nameError]);
-
-  function handleChangeLink(e) {
-    setLink(e.target.value);
-    setLinkError(e.target.validationMessage);
-  }
-
-  function handleChangeName(e) {
-    setName(e.target.value);
-    setNameError(e.target.validationMessage);
-  }
+  }, [isOpen, setValues, setIsValid]);
 
   function handleSubmit(e) {
     e.preventDefault();
     setCaption('Сохранение карточки...');
     // Передать значения управляемых компонентов во внешний обработчик
     onAddPlace({
-      link: link,
-      name: name,
+      link: values.link,
+      name: values.name,
     });
   }
 
@@ -58,15 +31,15 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
       title="Новое место"
       name="place"
       btnCaption={caption}
-      btnEnabled={formValid}
+      btnEnabled={isValid}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}>
       <input
         name="name"
         type="text"
-        value={name}
-        onChange={handleChangeName}
+        value={values.name}
+        onChange={handleChange}
         placeholder="Название"
         minLength="3"
         maxLength="30"
@@ -74,19 +47,19 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
         className="popup__input-text"
         required />
       <span className="popup__input-error">
-        {nameError}
+        {errors.name}
       </span>
       <input
         name="link"
         type="url"
-        value={link}
-        onChange={handleChangeLink}
+        value={values.link}
+        onChange={handleChange}
         placeholder="Ссылка на картинку"
         autoComplete="off"
         className="popup__input-text"
         required />
       <span className="popup__input-error">
-        {linkError}
+        {errors.link}
       </span>
     </PopupWithForm>
   );
