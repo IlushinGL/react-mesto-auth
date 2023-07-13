@@ -19,3 +19,9 @@ export const HOOKS_DATA = {
   mouseUp: 'mouseup',
   modalArea: 'popup',
 }
+export const FORM_STATUS = {
+  close: 'cl',
+  input: 'in',
+  load: 'ld',
+  err: 'er',
+}
