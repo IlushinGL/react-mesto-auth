@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import DataCollectionForm from './DataCollectionForm';
 
 function Register({onRegister}) {
@@ -46,7 +47,8 @@ function Register({onRegister}) {
       name="register"
       btnCaption={'Зарегистрироваться'}
       btnEnabled={formValid}
-      onSubmit={handleSubmit}>
+      onSubmit={handleSubmit}
+      option={<NavLink to="/sign-in" className="data__link data__link_str"> Уже зарегистрированы? Войти </NavLink>}>
       <input
         name="email"
         type="email"

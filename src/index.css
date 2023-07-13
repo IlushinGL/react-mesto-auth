@@ -18,6 +18,8 @@
 @import url(./blocks/data/__title/data__title.css);
 @import url(./blocks/data/_opened/data_opened.css);
 @import url(./blocks/data/__link/data__link.css);
+@import url(./blocks/data/__link/_str/data__link_str.css);
+@import url(./blocks/data/__text/data__text.css);
 
 @import url(./blocks/profile/profile.css);
 @import url(./blocks/profile/__avatar/profile__avatar.css);

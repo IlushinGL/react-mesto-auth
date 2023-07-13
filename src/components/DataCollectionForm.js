@@ -1,4 +1,5 @@
-function DataCollectionForm({name, title, btnCaption, btnEnabled, onSubmit, children}) {
+
+function DataCollectionForm({name, title, btnCaption, btnEnabled, onSubmit, children, option}) {
   return (
     <main className="content">
       <div className={`data data_type_${name} data_opened`}>
@@ -12,6 +13,7 @@ function DataCollectionForm({name, title, btnCaption, btnEnabled, onSubmit, chil
               className={`data__submit-btn ${!btnEnabled ? 'data__submit-btn_inactive': ''}`}>
               {btnCaption}
             </button>
+            {option}
           </form>
         </div>
       </div>

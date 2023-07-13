@@ -1,0 +1,14 @@
+.data__text {
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-right: 24px;
+  color: var(--color-fill);
+  background-color: transparent;
+  font-size: 18px;
+  line-height: 121%;
+  font-weight: 500;
+  text-align: right;
+  text-decoration: none;
+  cursor: default;
+}

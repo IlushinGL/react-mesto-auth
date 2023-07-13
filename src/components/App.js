@@ -3,6 +3,7 @@ import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { apInterface } from '../utils/Api';
 import { apiUserAuth } from '../utils/Auth';
+import ProtectedRoute from './ProtectedRoute';
 import Header from './Header';
 import Main from './Main';
 import Login from './Login';
@@ -37,29 +38,34 @@ function App() {
 
   React.useEffect(() => {
     checkToken();
-    // Помещаем МЕНЯ в КОНТЕКСТ.
-    apInterface.getUserInfo()
-    .then((info) => {setCurrentUser(info)})
-    .catch((err) => {
-      console.log(`${err} <Не удалось получить информацию о пользователе.>`);});
-    // Задаём начальный массив карточек.
-    apInterface.getInitialCards()
-    .then((initialCards) => {setCards(Array.from(initialCards))})
-    .catch((err) => {
-      console.log(`${err} <Не удалось получить начальный массив карточек.>`);});
-  }, []);
+    if (userEmail) {
+
+      // Помещаем МЕНЯ в КОНТЕКСТ.
+      apInterface.getUserInfo()
+      .then((info) => {setCurrentUser(info)})
+      .catch((err) => {
+        console.log(`${err} <Не удалось получить информацию о пользователе.>`);});
+
+        // Задаём начальный массив карточек.
+      apInterface.getInitialCards()
+      .then((initialCards) => {setCards(Array.from(initialCards))})
+      .catch((err) => {
+        console.log(`${err} <Не удалось получить начальный массив карточек.>`);});
+
+      navigate('/main', {replace: true});
+    }
+  }, [userEmail, navigate]);
 
   function handleRegister({email, password}) {
     apiUserAuth.register({email, password})
-    .then((res) => {
-      setUserKnown(true);
+    .then(() => {
       navigate('/sign-in', {replace: true});
     })
     .catch((err) => {
-      setUserKnown(false);
       console.log(`${err} <Неудачная попытка регистрации.>`);
     })
     .finally(() => {
+      setUserKnown(false);
       setUserEmail('');
       setInfoTooltipOpen(true);
     });
@@ -83,17 +89,32 @@ function App() {
 
   function checkToken() {
     const jwt = localStorage.getItem('jwt');
+
     if (jwt) {
       apiUserAuth.checkToken(jwt)
       .then((res) => {
         setUserKnown(true);
         setUserEmail(res.data.email);
+
       })
       .catch((err) => {
         setUserKnown(false);
         setUserEmail('');
         console.log(`${err} <Тухлый токен.>`);
       });
+    } else {
+      setUserKnown(false);
+      setUserEmail('');
+    }
+  }
+
+  function handleSignout() {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      localStorage.removeItem('jwt');
+      setUserKnown(false);
+      setUserEmail('');
+      navigate('/sign-in', {replace: true});
     }
   }
 
@@ -190,21 +211,47 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header email={userEmail} />
+
         <Routes>
-          <Route path="/" element={isUserKnown ? <Navigate to="/main" replace /> : <Navigate to="/sign-in" replace />} />
-          <Route path="/sign-in" element={<Login onLogIn={handleLogin} />} />
-          <Route path="/sign-up" element={<Register onRegister={handleRegister} />} />
-          <Route path="/main" element={
-            <Main cards={cards}
-              onEditProfile={handleEditProfileClick}
-              onAddPlace={handleAddPlaceClick}
-              onEditAvatar={handleEditAvatarClick}
-              onCardClick={handleCardClick}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
-            />}
+          <Route
+            path="/sign-in"
+            element={
+            <>
+              <Header linkName="Регистрация" linkTo="/sign-up" />
+              <Login onLogIn={handleLogin} />
+            </>}
           />
+          <Route
+            path="/sign-up"
+            element={
+            <>
+              <Header linkName="Войти" linkTo="/sign-in" />
+              <Register onRegister={handleRegister} />
+            </>}
+          />
+          <Route
+            path="/*"
+            element={
+              userEmail ?
+              <Navigate to="/main" replace /> :
+              <Navigate to="/sign-in" replace />}
+          />
+
+          <Route
+            path="/main"
+            element={<ProtectedRoute element={
+            <>
+              <Header email={userEmail} linkName="Выйти" onSignout={handleSignout} />
+              <Main
+                cards={cards}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
+                onEditAvatar={handleEditAvatarClick}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+              />
+            </>} loggedIn={isUserKnown}/>} />
         </Routes>
 
 
