@@ -1,59 +1,42 @@
 import React from 'react';
 import PopupWithForm from "./PopupWithForm";
+import { useFormAndValidation } from '../utils/customHooks';
 
-function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
-  const avatarRef = React.useRef();
-  const [linkError, setLinkError] = React.useState(' ');
-  const [caption, setCaption] = React.useState('Сохранить');
-  const [formValid, setFormValid] = React.useState(false);
+function EditAvatarPopup({btnCaption, isOpen, onClose, onUpdateAvatar}) {
+  const {values, handleChange, errors, isValid, resetForm} = useFormAndValidation();
 
   React.useEffect(() => {
     if (isOpen) {
-      setLinkError(' ');
-      setCaption('Сохранить');
-      setFormValid(false);
+      resetForm();
     }
-  }, [isOpen]);
-
-  React.useEffect(() => {
-    if (linkError) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [linkError]);
-
-  function handleChangeLink(e) {
-    setLinkError(e.target.validationMessage);
-  }
+  }, [isOpen, resetForm]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    setCaption('Изменение аватара...');
     // Передать значение поля во внешний обработчик
-    onUpdateAvatar(avatarRef.current.value);
+    onUpdateAvatar(values.link);
   }
 
   return (
     <PopupWithForm
       title="Обновить аватар"
       name="avatar"
-      btnCaption={caption}
-      btnEnabled={formValid}
+      btnCaption={btnCaption}
+      btnEnabled={isValid}
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}>
       <input
-        name="avatar"
+        name="link"
         type="url"
-        ref={avatarRef}
-        onChange={handleChangeLink}
+        value={values.link || ''}
+        onChange={handleChange}
         placeholder="Ссылка на картинку"
         autoComplete="off"
         className="popup__input-text"
         required />
       <span className="popup__input-error">
-        {linkError}
+        {errors.link}
       </span>
     </PopupWithForm>
   );

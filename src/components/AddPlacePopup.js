@@ -2,23 +2,17 @@ import React from 'react';
 import PopupWithForm from "./PopupWithForm";
 import { useFormAndValidation } from '../utils/customHooks';
 
-function AddPlacePopup({isOpen, onClose, onAddPlace}) {
-  const {values, handleChange, errors, isValid, setValues, setIsValid} = useFormAndValidation()
-
-  const [caption, setCaption] = React.useState('Создать');
+function AddPlacePopup({btnCaption, isOpen, onClose, onAddPlace}) {
+  const {values, handleChange, errors, isValid, resetForm} = useFormAndValidation();
 
   React.useEffect(() => {
     if (!isOpen) {
-      setValues({link: '', name: ''});
-      setIsValid(false);
-
-      setCaption('Создать');
+      resetForm();
     }
-  }, [isOpen, setValues, setIsValid]);
+  }, [isOpen, resetForm]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    setCaption('Сохранение карточки...');
     // Передать значения управляемых компонентов во внешний обработчик
     onAddPlace({
       link: values.link,
@@ -30,7 +24,7 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
     <PopupWithForm
       title="Новое место"
       name="place"
-      btnCaption={caption}
+      btnCaption={btnCaption}
       btnEnabled={isValid}
       isOpen={isOpen}
       onClose={onClose}
@@ -38,7 +32,7 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
       <input
         name="name"
         type="text"
-        value={values.name}
+        value={values.name || ''}
         onChange={handleChange}
         placeholder="Название"
         minLength="3"
@@ -52,7 +46,7 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
       <input
         name="link"
         type="url"
-        value={values.link}
+        value={values.link || ''}
         onChange={handleChange}
         placeholder="Ссылка на картинку"
         autoComplete="off"

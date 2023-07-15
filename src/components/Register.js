@@ -1,59 +1,34 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import DataCollectionForm from './DataCollectionForm';
+import { useFormAndValidation } from '../utils/customHooks';
 
-function Register({onRegister}) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-
-  const [emailError, setEmailError] = React.useState(' ');
-  const [passwordError, setPasswordError] = React.useState(' ');
-
-  const [formValid, setFormValid] = React.useState(false);
-
-  // const [caption, setCaption] = React.useState('Зарегистрироваться');
-
-  React.useEffect(() => {
-    if (emailError || passwordError) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [emailError, passwordError]);
-
-  function handleChangeEmail(e) {
-    setEmail(e.target.value);
-    setEmailError(e.target.validationMessage);
-  }
-
-  function handleChangePassword(e) {
-    setPassword(e.target.value);
-    setPasswordError(e.target.validationMessage);
-  }
+function Register({btnCaption, onRegister}) {
+  const {values, handleChange, errors, isValid, resetForm} = useFormAndValidation();
 
   function handleSubmit(e) {
     e.preventDefault();
-    // setCaption('Регистрация...');
     // Передать значения управляемых компонентов во внешний обработчик
     onRegister({
-      email: email,
-      password: password,
+      email: values.email,
+      password: values.password,
     });
+    resetForm();
   }
 
   return (
     <DataCollectionForm
       title="Регистрация"
       name="register"
-      btnCaption={'Зарегистрироваться'}
-      btnEnabled={formValid}
+      btnCaption={btnCaption}
+      btnEnabled={isValid}
       onSubmit={handleSubmit}
       option={<NavLink to="/sign-in" className="data__link data__link_str"> Уже зарегистрированы? Войти </NavLink>}>
       <input
         name="email"
         type="email"
-        value={email}
-        onChange={handleChangeEmail}
+        value={values.email || ''}
+        onChange={handleChange}
         placeholder="Email"
         minLength="5"
         maxLength="40"
@@ -61,13 +36,13 @@ function Register({onRegister}) {
         className="data__input-text"
         required />
       <span className="data__input-error">
-        {emailError}
+        {errors.email}
       </span>
       <input
         name="password"
         type="password"
-        value={password}
-        onChange={handleChangePassword}
+        value={values.password || ''}
+        onChange={handleChange}
         placeholder="Пароль"
         minLength="8"
         maxLength="12"
@@ -75,7 +50,7 @@ function Register({onRegister}) {
         className="data__input-text"
         required />
       <span className="data__input-error">
-        {passwordError}
+        {errors.password}
       </span>
     </DataCollectionForm>
   );

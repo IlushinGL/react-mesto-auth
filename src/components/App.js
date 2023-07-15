@@ -218,7 +218,7 @@ function App() {
             element={
             <>
               <Header linkName="Регистрация" linkTo="/sign-up" />
-              <Login onLogIn={handleLogin} />
+              <Login btnCaption={'Войти'} onLogIn={handleLogin} />
             </>}
           />
           <Route
@@ -226,7 +226,7 @@ function App() {
             element={
             <>
               <Header linkName="Войти" linkTo="/sign-in" />
-              <Register onRegister={handleRegister} />
+              <Register btnCaption={'Зарегистрироваться'} onRegister={handleRegister} />
             </>}
           />
           <Route
@@ -260,16 +260,19 @@ function App() {
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
         <EditProfilePopup
+          btnCaption={'Сохранить'}
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
           onUpdateUser={handleUpdateUser} />
 
         <EditAvatarPopup
+          btnCaption={'Сохранить'}
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
           onUpdateAvatar={handleUpdateAvatar} />
 
         <AddPlacePopup
+          btnCaption={'Сохранить'}
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
           onAddPlace={handleAddPlaceSubmit} />
