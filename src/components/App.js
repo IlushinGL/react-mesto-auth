@@ -140,12 +140,14 @@ function App() {
     apInterface.deleteCard(deletedCard._id)
     .then(() => {
       setCards((state) => state.filter((item) => item._id !== deletedCard._id));
+      closeAllPopups();
     })
     .catch((err) => {
       console.log(`${err} <Не удалось удалить карточку id:${deletedCard._id}>`);})
-    .finally(() => {
-      closeAllPopups();
-    });
+    // .finally(() => {
+
+    // })
+    ;
   }
 
   function handleUpdateUser(new_info) {
@@ -153,12 +155,14 @@ function App() {
     apInterface.setUserInfo(new_info)
     .then((saved_info) => {
       setCurrentUser(saved_info);
+      closeAllPopups();
     })
     .catch((err) => {
       console.log(`${err} <Не удалось изменить профиль name:${new_info.name} about:${new_info.about}>`);})
-    .finally(() => {
-      closeAllPopups();
-    });
+    // .finally(() => {
+
+    // })
+    ;
   }
 
   function handleUpdateAvatar(new_link) {
@@ -166,12 +170,14 @@ function App() {
     apInterface.setUserAvatar(new_link)
     .then((saved_link) => {
       setCurrentUser(saved_link);
+      closeAllPopups();
     })
     .catch((err) => {
       console.log(`${err} <Не удалось обновить аватар link:${new_link}>`);})
-    .finally(() => {
-      closeAllPopups();
-    });
+    // .finally(() => {
+
+    // })
+    ;
   }
 
   function handleAddPlaceSubmit(new_card) {
@@ -179,12 +185,14 @@ function App() {
     apInterface.addNewCard(new_card)
     .then((saved_card) => {
       setCards([saved_card, ...cards]);
+      closeAllPopups();
     })
     .catch((err) => {
       console.log(`${err} <Не удалось добавить карточку name:${new_card.name} link:${new_card.link}>`);})
-    .finally(() => {
-      closeAllPopups();
-    });
+    // .finally(() => {
+
+    // })
+    ;
   }
 
   function handleEditAvatarClick() {
