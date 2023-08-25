@@ -37,18 +37,18 @@ function App() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    checkToken();
-    if (userEmail) {
+    getKnownToken();
 
+    if (userEmail) {
       // Помещаем МЕНЯ в КОНТЕКСТ.
       apInterface.getUserInfo()
       .then((info) => {setCurrentUser(info)})
       .catch((err) => {
         console.log(`${err} <Не удалось получить информацию о пользователе.>`);});
 
-        // Задаём начальный массив карточек.
+      // Задаём начальный массив карточек.
       apInterface.getInitialCards()
-      .then((initialCards) => {setCards(Array.from(initialCards))})
+      .then((initialCards) => {setCards(Array.from(initialCards.data))})
       .catch((err) => {
         console.log(`${err} <Не удалось получить начальный массив карточек.>`);});
 
@@ -74,9 +74,10 @@ function App() {
   function handleLogin({email, password}) {
     apiUserAuth.login({email, password})
     .then((res) => {
+      localStorage.setItem('jwt', res.token);
+      apInterface.setAuth(res.token);
       setUserKnown(true);
       setUserEmail(email);
-      localStorage.setItem('jwt', res.token);
       navigate('/main', {replace: true});
     })
     .catch((err) => {
@@ -87,14 +88,15 @@ function App() {
     });
   }
 
-  function checkToken() {
+  function getKnownToken() {
     const jwt = localStorage.getItem('jwt');
 
     if (jwt) {
       apiUserAuth.checkToken(jwt)
       .then((res) => {
+        apInterface.setAuth(jwt);
         setUserKnown(true);
-        setUserEmail(res.data.email);
+        setUserEmail(res.email);
 
       })
       .catch((err) => {
@@ -120,11 +122,12 @@ function App() {
 
   function handleCardLike(card) {
     // Есть ли МОЙ лайк на карточке?
-    const isLiked = card.likes.some(like => like._id === currentUser._id);
-    // Отправить запрос в API на изменение лайка карточки, получить и отрисовать обновлённые данные
+    const isLiked = card.likes.some(item => item === currentUser._id);
+    // Отправить запрос в API на изменение лайка карточки
     apInterface.likeCard(card._id, !isLiked)
     .then((newCard) => {
-      setCards((state) => state.map((item) => item._id === card._id ? newCard : item));
+      // отрисовать обновлённые данные
+      setCards((state) => state.map((item) => item._id === card._id ? newCard.data : item));
     })
     .catch((err) => {
       console.log(`${err} <Не удалось поставить лайк на карточке id:${card._id}>`);});
@@ -154,7 +157,7 @@ function App() {
     // Отправить запрос в API на изменение и отрисовать новый профиль.
     apInterface.setUserInfo(new_info)
     .then((saved_info) => {
-      setCurrentUser(saved_info);
+      setCurrentUser(saved_info.data);
       closeAllPopups();
     })
     .catch((err) => {
@@ -169,7 +172,7 @@ function App() {
     // Отправить запрос в API на изменение и отрисовать новый аватар.
     apInterface.setUserAvatar(new_link)
     .then((saved_link) => {
-      setCurrentUser(saved_link);
+      setCurrentUser(saved_link.data);
       closeAllPopups();
     })
     .catch((err) => {
@@ -184,7 +187,7 @@ function App() {
     // Отправить запрос в API на добавление карточки и отрисовать список.
     apInterface.addNewCard(new_card)
     .then((saved_card) => {
-      setCards([saved_card, ...cards]);
+      setCards([saved_card.data, ...cards]);
       closeAllPopups();
     })
     .catch((err) => {

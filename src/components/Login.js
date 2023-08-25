@@ -25,7 +25,7 @@ function Login({btnCaption, onLogIn}) {
       <input
         name="email"
         type="email"
-        value={values.email}
+        value={values.email || ''}
         onChange={handleChange}
         placeholder="Email"
         minLength="5"
@@ -39,7 +39,7 @@ function Login({btnCaption, onLogIn}) {
       <input
         name="password"
         type="password"
-        value={values.password}
+        value={values.password || ''}
         onChange={handleChange}
         placeholder="Пароль"
         minLength="8"

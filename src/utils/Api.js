@@ -1,14 +1,11 @@
 import {API_DATA} from './constants';
 
 class Api {
-  constructor({server, cohortId, token, user, avatar, cards, like}) {
+  constructor({server, user, avatar, cards, like}) {
     // на вход поступает один объект с указанными  ключами, значения которых
     // используются для конструирования запросов к серверу
-    this._baseURL = server + cohortId;
-    this._auth = {
-      authorization: token,
-      'Content-Type': 'application/json'
-    };
+    this._baseURL = server;
+    this._auth = {};
     this._user = user;
     this._avatar = avatar;
     this._cards = cards;
@@ -20,6 +17,13 @@ class Api {
       return response.json();
     }
     return Promise.reject(`ApiErr_${errTitle}=${response.status}`);
+  }
+
+  setAuth(jwt) {
+    this._auth = {
+      authorization: jwt,
+      'Content-Type': 'application/json'
+    };
   }
 
   getInitialCards() {

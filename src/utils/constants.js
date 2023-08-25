@@ -1,14 +1,12 @@
 export const API_DATA = {
-  server: 'https://mesto.nomoreparties.co/v1',
-  cohortId: '/cohort-66',
-  token: 'd592279c-c8eb-4743-a6ef-300ef527bbe3',
+  server: 'http://mesto-api.iknow.studio',
   user: '/users/me',
   avatar: '/avatar',
   cards: '/cards',
   like: '/likes',
 };
 export const AUTH_DATA = {
-  server: 'https://auth.nomoreparties.co',
+  server: 'http://mesto-api.iknow.studio',
   signUp: '/signup',
   signIn: '/signin',
   user: '/users/me',
