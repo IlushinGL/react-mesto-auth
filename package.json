@@ -1,16 +1,20 @@
 {
-  "name": "mesto-react-auth",
-  "version": "0.1.0",
+  "name": "mesto-react-front-end",
+  "version": "0.1.1",
+  "description": "Учебный проект курса WEB-разработчик Yandex Практкума",
   "private": true,
+  "keywords": [
+    "js",
+    "HTML5",
+    "react"
+  ],
+  "author": "Илюшин Григорий",
+  "license": "ISC",
   "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-router-dom": "^6.14.1",
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -5,6 +5,11 @@
 /.pnp
 .pnp.js
 
+# dev
+/dist
+/.junk
+/reminder.txt
+
 # testing
 /coverage
 
@@ -22,12 +27,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Файлы и папки операционной системы
-# .DS_Store
-# Thumbs.db
 
-# Файлы редактора
-# .idea
-# *.sublime*
-# .vscode
-# .editorconfig
+# IDE
+.idea
+.vscode
+*.code-workspace
+.AppleDouble
+.LSOverride
