@@ -62,11 +62,9 @@ function App() {
       navigate('/sign-in', {replace: true});
     })
     .catch((err) => {
-      console.log(`${err} <Неудачная попытка регистрации.>`);
-    })
-    .finally(() => {
       setUserKnown(false);
       setUserEmail('');
+      console.log(`${err} <Неудачная попытка регистрации.>`);
       setInfoTooltipOpen(true);
     });
   }
