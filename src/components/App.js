@@ -65,6 +65,8 @@ function App() {
       setUserKnown(false);
       setUserEmail('');
       console.log(`${err} <Неудачная попытка регистрации.>`);
+    })
+    .finally(() => {
       setInfoTooltipOpen(true);
     });
   }
