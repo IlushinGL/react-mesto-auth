@@ -43,7 +43,7 @@ function App() {
       .then(([userInfo, initialCards]) => {
         setCurrentUser(userInfo);
         setCards(Array.from(initialCards.data));
-        navigate('/main');
+        navigate('/main', {replace: true});
       })
       .catch((err) => {
         console.log(`${err} <Не удалось собрать информацию>`);
@@ -78,7 +78,8 @@ function App() {
     .then(() => {
       setUserKnown(true);
       setUserEmail(email);
-      navigate('/sign-in');
+      navigate('/sign-in', {replace: true});
+
     })
     .catch((err) => {
       setUserKnown(false);
@@ -97,7 +98,7 @@ function App() {
       apInterface.setAuth(res.token);
       setUserKnown(true);
       setUserEmail(email);
-      navigate('/main');
+      navigate('/main', {replace: true});
 
     })
     .catch((err) => {
@@ -112,10 +113,12 @@ function App() {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
       localStorage.removeItem('jwt');
-      setUserKnown(false);
-      setUserEmail('');
-      navigate('/sign-in');
     }
+    // деавторизация
+    apInterface.setAuth('');
+    setUserKnown(false);
+    setUserEmail('');
+    navigate('/sign-in', {replace: true});
   }
 
   function handleCardLike(card) {
