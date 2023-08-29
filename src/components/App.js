@@ -15,10 +15,15 @@ import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import ConfirmationPopup from './ConfirmationPopup';
 import InfoTooltip from './InfoTooltip';
-
+import avatarNulllPath from '../images/template.png';
 
 function App() {
-  const [currentUser, setCurrentUser] = React.useState(null);
+  const [currentUser, setCurrentUser] = React.useState({
+    _id: '-1',
+    name: 'имя',
+    about: 'занятие',
+    avatar: avatarNulllPath,
+  });
   const [cards, setCards] = React.useState([]);
   const [isEditProfilePopupOpen, setProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setPlacePopupOpen] = React.useState(false);
@@ -32,59 +37,22 @@ function App() {
 
   React.useEffect(() => {
 
-    if (!isUserKnown) {
-      getKnownToken();
-      return;
-    }
+    if (isUserKnown) {
 
-    Promise.all([apInterface.getUserInfo(), apInterface.getInitialCards()])
+      Promise.all([apInterface.getUserInfo(), apInterface.getInitialCards()])
       .then(([userInfo, initialCards]) => {
         setCurrentUser(userInfo);
         setCards(Array.from(initialCards.data));
-        navigate('/main', {replace: true});
+        navigate('/main');
       })
       .catch((err) => {
         console.log(`${err} <Не удалось собрать информацию>`);
       });
+    }
 
   }, [isUserKnown, navigate]);
 
-  function handleRegister({email, password}) {
-    apiUserAuth.register({email, password})
-    .then(() => {
-      navigate('/sign-in', {replace: true});
-      setUserKnown(true);
-      setUserEmail(email);
-    })
-    .catch((err) => {
-      setUserKnown(false);
-      setUserEmail('');
-      console.log(`${err} <Неудачная попытка регистрации.>`);
-    })
-    .finally(() => {
-      setInfoTooltipOpen(true);
-    });
-  }
-
-  function handleLogin({email, password}) {
-    apiUserAuth.login({email, password})
-    .then((res) => {
-      localStorage.setItem('jwt', res.token);
-      apInterface.setAuth(res.token);
-      setUserKnown(true);
-      setUserEmail(email);
-
-      navigate('/main', {replace: true});
-    })
-    .catch((err) => {
-      setUserKnown(false);
-      setUserEmail('');
-      console.log(`${err} <Неудачная попытка авторизации.>`);
-      setInfoTooltipOpen(true);
-    });
-  }
-
-  function getKnownToken() {
+  React.useEffect(() =>  {
     const jwt = localStorage.getItem('jwt');
 
     if (jwt) {
@@ -103,6 +71,41 @@ function App() {
       setUserKnown(false);
       setUserEmail('');
     }
+  }, []);
+
+  function handleRegister({email, password}) {
+    apiUserAuth.register({email, password})
+    .then(() => {
+      setUserKnown(true);
+      setUserEmail(email);
+      navigate('/sign-in');
+    })
+    .catch((err) => {
+      setUserKnown(false);
+      setUserEmail('');
+      console.log(`${err} <Неудачная попытка регистрации.>`);
+    })
+    .finally(() => {
+      setInfoTooltipOpen(true);
+    });
+  }
+
+  function handleLogin({email, password}) {
+    apiUserAuth.login({email, password})
+    .then((res) => {
+      localStorage.setItem('jwt', res.token);
+      apInterface.setAuth(res.token);
+      setUserKnown(true);
+      setUserEmail(email);
+      navigate('/main');
+
+    })
+    .catch((err) => {
+      setUserKnown(false);
+      setUserEmail('');
+      console.log(`${err} <Неудачная попытка авторизации.>`);
+      setInfoTooltipOpen(true);
+    });
   }
 
   function handleSignout() {
@@ -111,7 +114,7 @@ function App() {
       localStorage.removeItem('jwt');
       setUserKnown(false);
       setUserEmail('');
-      navigate('/sign-in', {replace: true});
+      navigate('/sign-in');
     }
   }
 
