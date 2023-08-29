@@ -6,6 +6,7 @@ function InfoTooltip({isOK, isOpen, onClose}) {
   useEscapeKey(onClose);
   useOutsideClick(onClose);
   if (isOpen) {
+    console.log(isOK);
     return (
       <div className={"popup popup_type_tooltip popup_opened"}>
         <div className="popup__conteiner">
